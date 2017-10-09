@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum DataSourceAction {
+public enum DataSourceAction {
     case insert([IndexPath])
     case delete([IndexPath])
     case reload([IndexPath])
@@ -47,7 +47,7 @@ enum DataSourceAction {
     }
 }
 
-protocol DataSourceContainer: class {
+public protocol DataSourceContainer: class {
     // this will contain methods that pass up changes form leaf sources
     // to the collection view
     var collectionView: UICollectionView? { get }
@@ -67,11 +67,11 @@ extension DataSourceContainer {
     }
 }
 
-protocol SectionMetrics {}
+public protocol SectionMetrics {}
 
-protocol ItemMetrics {}
+public protocol ItemMetrics {}
 
-protocol DataSource: UICollectionViewDataSource {
+public protocol DataSource: UICollectionViewDataSource {
     func registerReusableViewsWith(_ collectionView: UICollectionView)
 
     weak var container: DataSourceContainer? { get set }

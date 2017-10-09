@@ -97,12 +97,8 @@ struct CollectionViewDiff {
 }
 
 public class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
-    weak var container: DataSourceContainer?
-
-    var editing: Bool = false
-
     fileprivate var lazyItems: [T]?
-    var items: [T] {
+    public var items: [T] {
         guard let items = lazyItems else {
             let items = loadInitialItems()
             lazyItems = items
@@ -137,8 +133,8 @@ public class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
         fatalError()
     }
 
-    func loadInitialItems() -> [T] { fatalError() }
-    func updateItems(_ newItems: [T]) {
+    public func loadInitialItems() -> [T] { fatalError() }
+    public func updateItems(_ newItems: [T]) {
         let oldItems = lazyItems
         lazyItems = newItems
 
@@ -149,30 +145,33 @@ public class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
     // MARK: - UICollectionViewDataSource
     // these need to be in here, because otherwise (in an extension) we get a "non objc method cannot satisfy requirement" error
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return self.collectionView(collectionView, cellForItem: self[indexPath], atIndexPath: indexPath)
     }
 
     // MARK: - DataSource
     // these need to be here because "declarations in extensions cannot be overridden yet
 
-    func registerReusableViewsWith(_ collectionView: UICollectionView) { fatalError() }
-    func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics { fatalError() }
-    func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics { fatalError() }
+    public weak var container: DataSourceContainer?
+    public var editing: Bool = false
 
-    func canEditItemAt(_ indexPath: IndexPath) -> Bool {
+    public func registerReusableViewsWith(_ collectionView: UICollectionView) { fatalError() }
+    public func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics { fatalError() }
+    public func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics { fatalError() }
+
+    public func canEditItemAt(_ indexPath: IndexPath) -> Bool {
         return false
     }
 
-    func itemAt(_ indexPath: IndexPath, collectionView: UICollectionView) -> Any? {
+    public func itemAt(_ indexPath: IndexPath, collectionView: UICollectionView) -> Any? {
         return self[indexPath]
     }
 }
