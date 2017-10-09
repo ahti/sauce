@@ -8,22 +8,24 @@
 
 import UIKit
 
-struct FlowLayoutSectionMetrics: SectionMetrics {
-    var insets: UIEdgeInsets = UIEdgeInsets.zero
-    var minimumLineSpacing: CGFloat = 0
-    var minimumInteritemSpacing: CGFloat = 0
-    var headerSize: CGSize = CGSize.zero
-    var footerSize: CGSize = CGSize.zero
-    var hasCellSeparators = false
-    var separatorColor = UIColor(red: 0.78, green: 0.78, blue: 0.8, alpha: 1)
-    var shouldStretchCells = true
+public struct FlowLayoutSectionMetrics: SectionMetrics {
+    public init() {}
+    public var insets: UIEdgeInsets = UIEdgeInsets.zero
+    public var minimumLineSpacing: CGFloat = 0
+    public var minimumInteritemSpacing: CGFloat = 0
+    public var headerSize: CGSize = CGSize.zero
+    public var footerSize: CGSize = CGSize.zero
+    public var hasCellSeparators = false
+    public var separatorColor = UIColor(red: 0.78, green: 0.78, blue: 0.8, alpha: 1)
+    public var shouldStretchCells = true
 }
 
-struct FlowLayoutItemMetrics: ItemMetrics {
-    var size: CGSize = CGSize(width: 320, height: 43)
+public struct FlowLayoutItemMetrics: ItemMetrics {
+    public init() {}
+    public var size: CGSize = CGSize(width: 320, height: 43)
 }
 
-class SauceFlowLayoutController: SauceCollectionViewController, UICollectionViewDelegateFlowLayout {
+open class SauceFlowLayoutController: SauceCollectionViewController, UICollectionViewDelegateFlowLayout {
 
     fileprivate func _itemMetrics(_ indexPath: IndexPath, _ collectionView: UICollectionView, _ layout: UICollectionViewLayout) -> FlowLayoutItemMetrics {
         let m = dataSource.metricsForItemAt(indexPath, collectionView: collectionView, layout: layout)
@@ -41,27 +43,27 @@ class SauceFlowLayoutController: SauceCollectionViewController, UICollectionView
         return metrics
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return _itemMetrics(indexPath, collectionView, collectionViewLayout).size
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return _sectionMetrics(section, collectionView, collectionViewLayout).insets
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return _sectionMetrics(section, collectionView, collectionViewLayout).minimumLineSpacing
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return _sectionMetrics(section, collectionView, collectionViewLayout).minimumInteritemSpacing
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return _sectionMetrics(section, collectionView, collectionViewLayout).headerSize
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return _sectionMetrics(section, collectionView, collectionViewLayout).footerSize
     }
 }

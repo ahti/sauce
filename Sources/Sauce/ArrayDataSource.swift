@@ -96,7 +96,7 @@ struct CollectionViewDiff {
     }
 }
 
-public class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
+open class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
     fileprivate var lazyItems: [T]?
     public var items: [T] {
         guard let items = lazyItems else {
@@ -129,11 +129,11 @@ public class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
         return IndexPath(item: indexOfItem(item), section: 0)
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItem item: T, atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
-        fatalError()
+    open func collectionView(_ collectionView: UICollectionView, cellForItem item: T, atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        fatalError("\(type(of: self)) needs to implement \(#function) without calling super")
     }
 
-    public func loadInitialItems() -> [T] { fatalError() }
+    open func loadInitialItems() -> [T] { fatalError() }
     public func updateItems(_ newItems: [T]) {
         let oldItems = lazyItems
         lazyItems = newItems
@@ -163,11 +163,11 @@ public class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
     public weak var container: DataSourceContainer?
     public var editing: Bool = false
 
-    public func registerReusableViewsWith(_ collectionView: UICollectionView) { fatalError() }
-    public func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics { fatalError() }
-    public func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics { fatalError() }
+    open func registerReusableViewsWith(_ collectionView: UICollectionView) { fatalError() }
+    open func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics { fatalError() }
+    open func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics { fatalError() }
 
-    public func canEditItemAt(_ indexPath: IndexPath) -> Bool {
+    open func canEditItemAt(_ indexPath: IndexPath) -> Bool {
         return false
     }
 

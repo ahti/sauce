@@ -58,11 +58,11 @@ public protocol DataSourceContainer: class {
 }
 
 extension DataSourceContainer {
-    func globalIndexPath(_ localIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
+    public func globalIndexPath(_ localIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
         return localIndexPath
     }
 
-    func localIndexPath(_ globalIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
+    public func localIndexPath(_ globalIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
         return globalIndexPath
     }
 }
@@ -96,23 +96,23 @@ public protocol DataSource: UICollectionViewDataSource {
 private struct DummyMetrics: SectionMetrics, ItemMetrics { }
 
 extension DataSource {
-    var containingViewController: UIViewController? {
+    public var containingViewController: UIViewController? {
         return container?.containingViewController()
     }
 
-    var collectionView: UICollectionView? {
+    public var collectionView: UICollectionView? {
         return container?.collectionView
     }
 
-    func globalIndexPath(_ localIndexPath: IndexPath) -> IndexPath? {
+    public func globalIndexPath(_ localIndexPath: IndexPath) -> IndexPath? {
         return container?.globalIndexPath(localIndexPath, inChild: self)
     }
 
-    func localIndexPath(_ globalIndexPath: IndexPath) -> IndexPath? {
+    public func localIndexPath(_ globalIndexPath: IndexPath) -> IndexPath? {
         return container?.localIndexPath(globalIndexPath, inChild: self)
     }
 
-    func perform(_ action: DataSourceAction) {
+    public func perform(_ action: DataSourceAction) {
         container?.dataSource(self, performed: action)
     }
 
@@ -128,7 +128,7 @@ extension DataSource {
         return false
     }
 
-    func itemAt(_ indexPath: IndexPath, collectionView: UICollectionView) -> Any? {
+    public func itemAt(_ indexPath: IndexPath, collectionView: UICollectionView) -> Any? {
         return nil
     }
 }

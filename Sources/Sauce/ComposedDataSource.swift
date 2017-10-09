@@ -8,23 +8,13 @@
 
 import UIKit
 
-class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, DataSourceContainer {
-    weak var container: DataSourceContainer?
-
+public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, DataSourceContainer {
     var movingEnabled = false
 
     var children: [DataSource] = []
 
     var mapping: [(DataSource, Int)] = []
     var mappingUpToDate = false
-
-    var editing: Bool = false {
-        didSet {
-            for c in children {
-                c.editing = editing
-            }
-        }
-    }
 
     func updateMapping() {
         if mappingUpToDate {
@@ -40,7 +30,7 @@ class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, Data
         mappingUpToDate = true
     }
 
-    func add(_ ds: DataSource, atIndex index: Int? = nil) {
+    public func add(_ ds: DataSource, atIndex index: Int? = nil) {
         guard !children.contains(where: { $0 === ds }) else {
             return
         }
@@ -61,7 +51,7 @@ class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, Data
         }
     }
 
-    func remove(_ ds: DataSource) {
+    public func remove(_ ds: DataSource) {
         guard let index = children.index(where: { $0 === ds }) else { return }
         ds.container = nil
         var oldSections: [Int]!
@@ -77,7 +67,7 @@ class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, Data
         }
     }
 
-    func updateChildren(_ newChildren: [DataSource]) {
+    public func updateChildren(_ newChildren: [DataSource]) {
         // don't do any unnecessary work if nothing changed
         // most importantly, calling perform(...) can be very expensive
         // with a big number of cells, since it triggers sizing calculations
@@ -196,7 +186,7 @@ class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, Data
     // only act like we support moving when configured to do so, because
     // the collectionView will behave differently when these methods are
     // implemented
-    override func responds(to aSelector: Selector) -> Bool {
+    public override func responds(to aSelector: Selector) -> Bool {
         switch aSelector {
         case #selector(UICollectionViewDataSource.collectionView(_:canMoveItemAt:)): fallthrough
         case #selector(UICollectionViewDataSource.collectionView(_:moveItemAt:to:)):
@@ -207,34 +197,34 @@ class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, Data
     }
 
     // MARK: UICollectionViewDataSource
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let (source, mappedSection) = map(section)
         return source.collectionView(collectionView, numberOfItemsInSection: mappedSection)
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let (source, path) = map(indexPath)
         return source.collectionView(collectionView, cellForItemAt: path)
     }
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         updateMapping()
         let counts = mapping.map({ $0.1 })
         let num = counts.reduce(0, +)
         return num
     }
 
-    @objc func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    @objc public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let (source, path) = map(indexPath)
         return source.collectionView!(collectionView, viewForSupplementaryElementOfKind: kind, at: path)
     }
 
-    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+    public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         let (source, path) = map(indexPath)
         return source.collectionView?(collectionView, canMoveItemAt: path) ?? false
     }
 
-    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let (source, sourcePath) = map(sourceIndexPath)
         let (otherSource, destPath) = map(destinationIndexPath)
 
@@ -244,53 +234,64 @@ class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSource, Data
     }
 
     // MARK: DataSource
-    func registerReusableViewsWith(_ collectionView: UICollectionView) {
+
+    public weak var container: DataSourceContainer?
+
+    public var editing: Bool = false {
+        didSet {
+            for c in children {
+                c.editing = editing
+            }
+        }
+    }
+
+    public func registerReusableViewsWith(_ collectionView: UICollectionView) {
         for c in children {
             c.registerReusableViewsWith(collectionView)
         }
     }
 
-    func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics {
+    public func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics {
         let (source, mappedSection) = map(section)
         return source.metricsForSection(mappedSection, collectionView: collectionView, layout: layout)
     }
 
-    func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics {
+    public func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics {
         let (source, mappedIndexPath) = map(indexPath)
         return source.metricsForItemAt(mappedIndexPath, collectionView: collectionView, layout: layout)
     }
 
-    func itemAt(_ indexPath: IndexPath, collectionView: UICollectionView) -> Any? {
+    public func itemAt(_ indexPath: IndexPath, collectionView: UICollectionView) -> Any? {
         let (source, mappedIndexPath) = map(indexPath)
         return source.itemAt(mappedIndexPath, collectionView: collectionView)
     }
 
-    func canEditItemAt(_ indexPath: IndexPath) -> Bool {
+    public func canEditItemAt(_ indexPath: IndexPath) -> Bool {
         let (source, mappedIndexPath) = map(indexPath)
         return source.canEditItemAt(mappedIndexPath)
     }
 
     // MARK: DataSourceContainer
-    var collectionView: UICollectionView? {
+    public var collectionView: UICollectionView? {
         return container?.collectionView
     }
 
-    func containingViewController() -> UIViewController? {
+    public func containingViewController() -> UIViewController? {
         return container?.containingViewController()
     }
 
-    func globalIndexPath(_ localIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
+    public func globalIndexPath(_ localIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
         return container?.globalIndexPath(unmap(localIndexPath, inSource: child), inChild: self)
     }
 
-    func localIndexPath(_ globalIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
+    public func localIndexPath(_ globalIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
         guard let fromContainer = container?.localIndexPath(globalIndexPath, inChild: self) else { return nil }
         let (source, localIP) = map(fromContainer)
         guard source === child else { fatalError() }
         return localIP
     }
 
-    func dataSource(_ dataSource: DataSource, performed action: DataSourceAction) {
+    public func dataSource(_ dataSource: DataSource, performed action: DataSourceAction) {
         let ui: (IndexPath) -> IndexPath = { self.unmap($0, inSource: dataSource) }
         let us: (Int) -> Int = { self.unmap($0, inSource: dataSource) }
 

@@ -8,20 +8,20 @@
 
 import UIKit
 
-class SauceCollectionViewController: UICollectionViewController, DataSourceContainer {
+open class SauceCollectionViewController: UICollectionViewController, DataSourceContainer {
     let dataSource: DataSource
 
-    init(collectionViewLayout layout: UICollectionViewLayout, dataSource: DataSource) {
+    public init(collectionViewLayout layout: UICollectionViewLayout, dataSource: DataSource) {
         self.dataSource = dataSource
         super.init(collectionViewLayout: layout)
         dataSource.container = self
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         guard let collectionView = self.collectionView
@@ -32,12 +32,12 @@ class SauceCollectionViewController: UICollectionViewController, DataSourceConta
         dataSource.registerReusableViewsWith(collectionView)
     }
 
-    func containingViewController() -> UIViewController? {
+    public func containingViewController() -> UIViewController? {
         return self
     }
 
-    func dataSource(_ dataSource: DataSource, performed action: DataSourceAction) {
-        guard let c = collectionView else { return }
+    public func dataSource(_ dataSource: DataSource, performed action: DataSourceAction) {
+        guard isViewLoaded, let c = collectionView else { return }
 
         switch action {
         case .insert(let p):

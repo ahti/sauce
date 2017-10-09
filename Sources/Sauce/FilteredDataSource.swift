@@ -8,28 +8,28 @@
 
 import Foundation
 
-class EmptySource: NSObject, DataSource {
-    weak var container: DataSourceContainer?
-    var editing: Bool = false
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+open class EmptySource: NSObject, DataSource {
+    public weak var container: DataSourceContainer?
+    public var editing: Bool = false
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         fatalError()
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 0
     }
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    open func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 0
     }
-    func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics {
+    open func metricsForSection(_ section: Int, collectionView: UICollectionView, layout: UICollectionViewLayout) -> SectionMetrics {
         fatalError()
     }
-    func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics {
+    open func metricsForItemAt(_ indexPath: IndexPath, collectionView: UICollectionView, layout: UICollectionViewLayout) -> ItemMetrics {
         fatalError()
     }
 
-    func canEditItemAt(_ indexPath: IndexPath) -> Bool { fatalError() }
+    open func canEditItemAt(_ indexPath: IndexPath) -> Bool { fatalError() }
 
-    func registerReusableViewsWith(_ collectionView: UICollectionView) {
+    open func registerReusableViewsWith(_ collectionView: UICollectionView) {
         fatalError()
     }
 }

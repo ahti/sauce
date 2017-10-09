@@ -23,12 +23,12 @@ extension UICollectionView {
 }
 
 extension UICollectionView {
-    func register(typeForSupplement type: UICollectionReusableView.Type, ofKind kind: String, reuseIdentifier: String? = nil) {
+    public func register(typeForSupplement type: UICollectionReusableView.Type, ofKind kind: String, reuseIdentifier: String? = nil) {
         let identifier = reuseIdentifier ?? NSStringFromClass(type)
         self.register(type, forSupplementaryViewOfKind: kind, withReuseIdentifier: identifier)
     }
 
-    func dequeue<V: UICollectionReusableView>(supplementOfType type: V.Type, ofKind kind: String, indexPath: IndexPath, reuseIdentifier: String? = nil) -> V {
+    public func dequeue<V: UICollectionReusableView>(supplementOfType type: V.Type, ofKind kind: String, indexPath: IndexPath, reuseIdentifier: String? = nil) -> V {
         let identifier = reuseIdentifier ?? NSStringFromClass(type)
         return dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier, for: indexPath) as! V
     }
