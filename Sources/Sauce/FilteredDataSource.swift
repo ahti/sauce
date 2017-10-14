@@ -63,7 +63,12 @@ class FilterHeaderSource: EmptySource {
         let v = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FilterHeaderSource.headerIdentifier, for: globalIndexPath(indexPath)!)
         searchBar.removeFromSuperview()
         v.addSubview(searchBar)
-        NSLayoutConstraint.activate(searchBar.constraintsForPlacingIn(v))
+        NSLayoutConstraint.activate([
+            searchBar.leftAnchor.constraint(equalTo: v.leftAnchor),
+            searchBar.rightAnchor.constraint(equalTo: v.rightAnchor),
+            searchBar.topAnchor.constraint(equalTo: v.topAnchor),
+            searchBar.bottomAnchor.constraint(equalTo: v.bottomAnchor),
+        ])
         return v
     }
 }
