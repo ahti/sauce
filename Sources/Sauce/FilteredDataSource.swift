@@ -110,8 +110,8 @@ class ContentSource<F>: ArrayDataSource<F.Element>, DataSourceContainer where F:
 
     // MARK: data source container
 
-    var collectionView: UICollectionView? {
-        return container?.collectionView
+    var collectionViewIfLoaded: UICollectionView? {
+        return container?.collectionViewIfLoaded
     }
 
     func containingViewController() -> UIViewController? {

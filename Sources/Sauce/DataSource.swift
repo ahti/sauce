@@ -50,7 +50,7 @@ public enum DataSourceAction {
 public protocol DataSourceContainer: class {
     // this will contain methods that pass up changes form leaf sources
     // to the collection view
-    var collectionView: UICollectionView? { get }
+    var collectionViewIfLoaded: UICollectionView? { get }
     func globalIndexPath(_ localIndexPath: IndexPath, inChild child: DataSource) -> IndexPath?
     func localIndexPath(_ globalIndexPath: IndexPath, inChild child: DataSource) -> IndexPath?
     func containingViewController() -> UIViewController?
@@ -101,7 +101,7 @@ extension DataSource {
     }
 
     public var collectionView: UICollectionView? {
-        return container?.collectionView
+        return container?.collectionViewIfLoaded
     }
 
     public func globalIndexPath(_ localIndexPath: IndexPath) -> IndexPath? {

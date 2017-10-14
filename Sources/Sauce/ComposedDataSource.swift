@@ -21,7 +21,7 @@ public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSourc
             return
         }
 
-        guard let cv = container?.collectionView else { fatalError() }
+        guard let cv = collectionView else { fatalError() }
         mapping = []
         for s in children {
             let sections = s.numberOfSections!(in: cv)
@@ -42,7 +42,7 @@ public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSourc
             children += [ds]
         }
         mappingUpToDate = false
-        if let cv = container?.collectionView {
+        if let cv = collectionView {
             ds.registerReusableViewsWith(cv)
             let newSections = self.sectionIndices(dataSource: ds)
             perform(.batch({
@@ -55,12 +55,12 @@ public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSourc
         guard let index = children.index(where: { $0 === ds }) else { return }
         ds.container = nil
         var oldSections: [Int]!
-        if container?.collectionView != nil {
+        if collectionView != nil {
             oldSections = sectionIndices(dataSource: ds)
         }
         children.remove(at: index)
         mappingUpToDate = false
-        if container?.collectionView != nil {
+        if collectionView != nil {
             perform(.batch({
                 for s in oldSections { self.perform(.deleteSection(s)) }
             }))
@@ -77,7 +77,7 @@ public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSourc
         let deleted = children.filter { s in !newChildren.contains { $0 === s } }
         let remaining = newChildren.filter { s in children.contains { $0 === s } }
 
-        let hasCv = container?.collectionView != nil
+        let hasCv = collectionView != nil
 
         let prevIndices = hasCv ? remaining.map { ($0, sectionIndices(dataSource: $0)) } : nil
         let deletedIndices = hasCv ? deleted.map { sectionIndices(dataSource: $0) } : nil
@@ -272,8 +272,8 @@ public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSourc
     }
 
     // MARK: DataSourceContainer
-    public var collectionView: UICollectionView? {
-        return container?.collectionView
+    public var collectionViewIfLoaded: UICollectionView? {
+        return collectionView
     }
 
     public func containingViewController() -> UIViewController? {

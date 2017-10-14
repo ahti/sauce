@@ -36,6 +36,11 @@ open class SauceCollectionViewController: UICollectionViewController, DataSource
         return self
     }
 
+    public var collectionViewIfLoaded: UICollectionView? {
+        guard isViewLoaded else { return nil }
+        return collectionView
+    }
+
     public func dataSource(_ dataSource: DataSource, performed action: DataSourceAction) {
         guard isViewLoaded, let c = collectionView else { return }
 

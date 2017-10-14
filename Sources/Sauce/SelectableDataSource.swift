@@ -50,8 +50,8 @@ class SelectableDataSource<T>: ArrayDataSource<SelectableItem<T>>, DataSourceCon
 
     // MARK: data source container
 
-    var collectionView: UICollectionView? {
-        return container?.collectionView
+    var collectionViewIfLoaded: UICollectionView? {
+        return collectionView
     }
 
     func containingViewController() -> UIViewController? {
