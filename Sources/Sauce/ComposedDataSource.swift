@@ -281,6 +281,7 @@ public class ComposedDataSource: NSObject, UICollectionViewDataSource, DataSourc
     }
 
     public func globalIndexPath(_ localIndexPath: IndexPath, inChild child: DataSource) -> IndexPath? {
+        guard collectionView != nil else { return nil }
         return container?.globalIndexPath(unmap(localIndexPath, inSource: child), inChild: self)
     }
 
