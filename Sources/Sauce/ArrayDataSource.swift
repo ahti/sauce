@@ -118,14 +118,14 @@ open class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
         return self[(indexPath as NSIndexPath).item]
     }
 
-    func indexOfItem(_ item: T) -> Int {
+    public func indexOfItem(_ item: T) -> Int {
         guard let index = items.index(of: item)
             else { fatalError("tried to get index of item not contained \(item)") }
 
         return index
     }
 
-    func indexPathOfItem(_ item: T) -> IndexPath {
+    public func indexPathOfItem(_ item: T) -> IndexPath {
         return IndexPath(item: indexOfItem(item), section: 0)
     }
 
