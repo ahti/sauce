@@ -157,6 +157,10 @@ open class ArrayDataSource<T>: NSObject, DataSource where T: Hashable {
         return self.collectionView(collectionView, cellForItem: self[indexPath], atIndexPath: indexPath)
     }
 
+//    open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        fatalError()
+//    }
+
     // MARK: - DataSource
     // these need to be here because "declarations in extensions cannot be overridden yet
 

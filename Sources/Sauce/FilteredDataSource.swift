@@ -38,7 +38,7 @@ class FilterHeaderSource: EmptySource {
     static let headerIdentifier = "FilterHeaderIdentifier"
 
     override func registerReusableViewsWith(_ collectionView: UICollectionView) {
-        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: FilterHeaderSource.headerIdentifier)
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: FilterHeaderSource.headerIdentifier)
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
