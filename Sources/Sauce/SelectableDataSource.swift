@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 func == <T>(lhs: SelectableItem<T>, rhs: SelectableItem<T>) -> Bool {
     return lhs === rhs

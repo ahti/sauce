@@ -74,7 +74,8 @@ public protocol ItemMetrics {}
 public protocol DataSource: UICollectionViewDataSource {
     func registerReusableViewsWith(_ collectionView: UICollectionView)
 
-    weak var container: DataSourceContainer? { get set }
+    // should be weak
+    var container: DataSourceContainer? { get set }
 
     // Implementations should return metrics appropriate for the layout.
     // Layouts should assert that metrics are of an appropriate type.

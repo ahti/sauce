@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class EmptySource: NSObject, DataSource {
     public weak var container: DataSourceContainer?
